@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Marketplace - Productos de Trekking - {{ .Site.Title }}</title>
+  <meta name="description" content="Encuentra el mejor equipamiento para tus aventuras de trekking">
+  <link rel="stylesheet" href="/css/styles.css">
+</head>
+<body>
+  {{ partial "header.html" . }}
+  
+  <section class="section">
+    <div class="container">
+      <h1 class="section-title">🎒 Marketplace de Productos</h1>
+      
+      <!-- Filter Controls -->
+      <div class="filter-controls">
+        <div class="filter-group">
+          <label for="filter-search">Buscar</label>
+          <input type="text" id="filter-search" class="filter-input" placeholder="Nombre del producto...">
+        </div>
+        
+        <div class="filter-group">
+          <label for="filter-categoria">Categoría</label>
+          <select id="filter-categoria" class="filter-select">
+            <option value="">Todas</option>
+            <option value="mochilas">Mochilas</option>
+            <option value="botas">Botas</option>
+            <option value="bastones">Bastones</option>
+            <option value="cantimplora">Cantimploras</option>
+            <option value="linterna">Linternas</option>
+            <option value="tienda">Tiendas</option>
+            <option value="chaqueta">Chaquetas</option>
+            <option value="powerbank">Powerbanks</option>
+          </select>
+        </div>
+        
+        <div class="filter-group">
+          <label for="filter-marca">Marca</label>
+          <select id="filter-marca" class="filter-select">
+            <option value="">Todas</option>
+            <option value="Osprey">Osprey</option>
+            <option value="Deuter">Deuter</option>
+            <option value="Salomon">Salomon</option>
+            <option value="Merrell">Merrell</option>
+            <option value="Black Diamond">Black Diamond</option>
+            <option value="Nalgene">Nalgene</option>
+            <option value="Petzl">Petzl</option>
+            <option value="MSR">MSR</option>
+            <option value="The North Face">The North Face</option>
+            <option value="Anker">Anker</option>
+          </select>
+        </div>
+        
+        <div class="filter-group">
+          <label for="filter-price-max">Precio Máx</label>
+          <input type="number" id="filter-price-max" class="filter-input" placeholder="$500">
+        </div>
+      </div>
+      
+      <div class="grid grid-productos" id="products-grid">
+        {{ range .Pages }}
+        <article class="card product-card" 
+                 data-title="{{ .Title }}" 
+                 data-categoria="{{ .Params.categoria }}" 
+                 data-marca="{{ .Params.marca }}" 
+                 data-precio="{{ .Params.precio }}">
+          <img src="{{ .Params.featured_image }}" alt="{{ .Title }}" class="card-image" loading="lazy">
+          <div class="card-content">
+            <h3 class="card-title">{{ .Title }}</h3>
+            <div class="card-meta">
+              <span>{{ .Params.categoria }}</span>
+              <span>{{ .Params.marca }}</span>
+            </div>
+            <div class="rating">
+              {{ range seq .Params.valoracion_media }}★{{ end }}{{ range seq (sub 5 .Params.valoracion_media) }}☆{{ end }}
+            </div>
+            <div class="card-price">${{ .Params.precio }}</div>
+            {{ if .Params.badge }}
+            <span class="badge badge-{{ .Params.badge }}" style="margin-top:0.5rem;">{{ .Params.badge }}</span>
+            {{ end }}
+            <ul class="product-features">
+              {{ range .Params.caracteristicas }}
+              <li>{{ . }}</li>
+              {{ end }}
+            </ul>
+            <a href="{{ .Params.enlace_afiliado }}" target="_blank" rel="nofollow sponsored" class="btn btn-affiliate">Ver en Tienda</a>
+          </div>
+        </article>
+        {{ end }}
+      </div>
+    </div>
+  </section>
+  
+  {{ partial "chat-widget.html" . }}
+  {{ partial "footer.html" . }}
+  {{ partial "search-script.html" . }}
+  
+  <script>
+    // Client-side filtering
+    document.addEventListener('DOMContentLoaded', function() {
+      const searchInput = document.getElementById('filter-search');
+      const categoriaSelect = document.getElementById('filter-categoria');
+      const marcaSelect = document.getElementById('filter-marca');
+      const priceMaxInput = document.getElementById('filter-price-max');
+      const productsGrid = document.getElementById('products-grid');
+      const products = Array.from(document.querySelectorAll('.product-card'));
+      
+      function filterProducts() {
+        const searchTerm = searchInput.value.toLowerCase();
+        const categoria = categoriaSelect.value.toLowerCase();
+        const marca = marcaSelect.value.toLowerCase();
+        const priceMax = parseFloat(priceMaxInput.value) || Infinity;
+        
+        products.forEach(product => {
+          const title = product.dataset.title.toLowerCase();
+          const prodCategoria = product.dataset.categoria.toLowerCase();
+          const prodMarca = product.dataset.marca.toLowerCase();
+          const price = parseFloat(product.dataset.precio) || 0;
+          
+          const matchesSearch = title.includes(searchTerm);
+          const matchesCategoria = !categoria || prodCategoria.includes(categoria);
+          const matchesMarca = !marca || prodMarca.includes(marca);
+          const matchesPrice = price <= priceMax;
+          
+          if (matchesSearch && matchesCategoria && matchesMarca && matchesPrice) {
+            product.style.display = 'block';
+          } else {
+            product.style.display = 'none';
+          }
+        });
+      }
+      
+      searchInput.addEventListener('input', filterProducts);
+      categoriaSelect.addEventListener('change', filterProducts);
+      marcaSelect.addEventListener('change', filterProducts);
+      priceMaxInput.addEventListener('input', filterProducts);
+    });
+  </script>
+</body>
+</html>

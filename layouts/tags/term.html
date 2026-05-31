@@ -1,0 +1,30 @@
+{{ define "main" }}
+<div class="container mx-auto px-4 py-8">
+  <h1 class="text-4xl font-bold text-blue-600 mb-6 capitalize">#{{ .Title }}</h1>
+  
+  <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+    {{ range .Pages }}
+    <article class="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-xl transition-shadow duration-300">
+      {{ if .Params.featured_image }}
+      <img src="{{ .Params.featured_image }}" alt="{{ .Title }}" class="w-full h-48 object-cover">
+      {{ else }}
+      <img src="https://images.unsplash.com/photo-1501785888041-af3ef285b470?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="{{ .Title }}" class="w-full h-48 object-cover">
+      {{ end }}
+      
+      <div class="p-6">
+        <h2 class="text-2xl font-bold text-gray-800 mb-2">
+          <a href="{{ .Permalink }}" class="hover:text-blue-600 transition-colors">{{ .Title }}</a>
+        </h2>
+        
+        <p class="text-gray-600 mb-4">{{ .Summary | truncate 120 }}</p>
+        
+        <div class="flex items-center justify-between">
+          <span class="text-sm text-gray-500">{{ .Date.Format "Jan 2, 2006" }}</span>
+          <a href="{{ .Permalink }}" class="text-blue-600 font-semibold hover:text-blue-700">Leer más →</a>
+        </div>
+      </div>
+    </article>
+    {{ end }}
+  </div>
+</div>
+{{ end }}

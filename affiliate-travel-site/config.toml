@@ -1,0 +1,60 @@
+baseURL = 'https://tudominio.com/'
+languageCode = 'es-es'
+title = 'Viajes y Trekking - Aventura y Exploración'
+theme = []
+
+[params]
+  description = "Descubre las mejores rutas de trekking y productos para tus aventuras"
+  author = "Tu Nombre"
+  affiliate_disclaimer = "Este sitio contiene enlaces de afiliados. Podemos recibir una comisión por compras realizadas a través de nuestros enlaces."
+  
+  # Colores vivos y alegres
+  colors.primary = "#FF6B35"    # Naranja vibrante
+  colors.secondary = "#004E89"  # Azul profundo
+  colors.accent = "#FFD23F"     # Amarillo alegre
+  colors.success = "#2EC4B6"    # Turquesa
+  colors.background = "#F7FFF7" # Blanco menta
+  
+  # Redes sociales (opcional)
+  social.twitter = ""
+  social.instagram = ""
+  social.facebook = ""
+
+[menu]
+  [[menu.main]]
+    name = "Inicio"
+    url = "/"
+    weight = 1
+  [[menu.main]]
+    name = "Rutas"
+    url = "/rutas/"
+    weight = 2
+  [[menu.main]]
+    name = "Blog"
+    url = "/blog/"
+    weight = 3
+  [[menu.main]]
+    name = "Productos"
+    url = "/productos/"
+    weight = 4
+  [[menu.main]]
+    name = "About"
+    url = "/page/about/"
+    weight = 5
+
+[taxonomies]
+  categoria = "categorias"
+  tag = "etiquetas"
+  marca = "marcas"
+
+[outputs]
+  home = ["HTML", "JSON"]
+
+[outputFormats.JSON]
+  mediaType = "application/json"
+  baseName = "search-index"
+
+[markup]
+  [markup.goldmark]
+    [markup.goldmark.renderer]
+      unsafe = true

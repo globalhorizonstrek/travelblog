@@ -1,0 +1,26 @@
+<header class="header">
+  <div class="container header-content">
+    <a href="/" class="logo">🏔️ Viajes&Trekking</a>
+    
+    <button class="mobile-menu-toggle" onclick="toggleMobileMenu()">☰</button>
+    
+    <nav>
+      <ul class="nav-menu" id="nav-menu">
+        {{ range .Site.Menus.main }}
+        <li><a href="{{ .URL }}">{{ .Name }}</a></li>
+        {{ end }}
+      </ul>
+    </nav>
+    
+    <div class="global-search">
+      <input type="text" class="search-input" id="global-search-input" placeholder="Buscar productos, rutas..." autocomplete="off">
+      <div class="search-results" id="search-results"></div>
+    </div>
+  </div>
+</header>
+
+<script>
+function toggleMobileMenu() {
+  document.getElementById('nav-menu').classList.toggle('active');
+}
+</script>

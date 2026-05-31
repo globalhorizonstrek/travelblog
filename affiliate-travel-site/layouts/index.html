@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{{ .Site.Title }} - {{ .Site.Params.description }}</title>
+  <meta name="description" content="{{ .Site.Params.description }}">
+  <link rel="stylesheet" href="/css/styles.css">
+</head>
+<body>
+  {{ partial "header.html" . }}
+  
+  <section class="hero">
+    <div class="container">
+      <h1>🏔️ Descubre Tu Próxima Aventura</h1>
+      <p>Rutas de trekking, equipos profesionales y consejos para exploradores como tú</p>
+    </div>
+  </section>
+  
+  <section class="section">
+    <div class="container">
+      <h2 class="section-title">🥾 Rutas Destacadas</h2>
+      <div class="grid grid-rutas">
+        {{ range first 4 (where .Site.RegularPages "Section" "rutas") }}
+        <article class="card">
+          <img src="{{ .Params.featured_image }}" alt="{{ .Title }}" class="card-image" loading="lazy">
+          <div class="card-content">
+            <h3 class="card-title">{{ .Title }}</h3>
+            <div class="card-meta">
+              <span>📍 {{ .Params.pais }}</span>
+              <span>📏 {{ .Params.distancia_km }} km</span>
+              <span>⏱️ {{ .Params.duracion_dias }} días</span>
+            </div>
+            <span class="badge difficulty-{{ .Params.dificultad }}">{{ .Params.dificultad }}</span>
+            <a href="{{ .Permalink }}" class="btn btn-primary" style="margin-top:1rem;display:block;text-align:center;">Ver Ruta</a>
+          </div>
+        </article>
+        {{ end }}
+      </div>
+      <div style="text-align:center;margin-top:2rem;">
+        <a href="/rutas/" class="btn btn-secondary">Ver Todas las Rutas</a>
+      </div>
+    </div>
+  </section>
+  
+  <section class="section" style="background:#f9f9f9;">
+    <div class="container">
+      <h2 class="section-title">🎒 Productos Recomendados</h2>
+      <div class="grid grid-productos">
+        {{ range first 4 (where .Site.RegularPages "Section" "productos") }}
+        <article class="card">
+          <img src="{{ .Params.featured_image }}" alt="{{ .Title }}" class="card-image" loading="lazy">
+          <div class="card-content">
+            <h3 class="card-title">{{ .Title }}</h3>
+            <div class="card-meta">
+              <span>{{ .Params.categoria }}</span>
+              <span>{{ .Params.marca }}</span>
+            </div>
+            <div class="card-price">${{ .Params.precio }}</div>
+            {{ if .Params.badge }}
+            <span class="badge badge-{{ .Params.badge }}" style="margin-top:0.5rem;">{{ .Params.badge }}</span>
+            {{ end }}
+            <a href="{{ .Params.enlace_afiliado }}" target="_blank" rel="nofollow sponsored" class="btn btn-affiliate">Ver en Tienda</a>
+          </div>
+        </article>
+        {{ end }}
+      </div>
+      <div style="text-align:center;margin-top:2rem;">
+        <a href="/productos/" class="btn btn-secondary">Ver Marketplace</a>
+      </div>
+    </div>
+  </section>
+  
+  <section class="section">
+    <div class="container">
+      <h2 class="section-title">📝 Últimos Artículos</h2>
+      <div class="grid grid-blog">
+        {{ range first 3 (where .Site.RegularPages "Section" "blog") }}
+        <article class="card">
+          <img src="{{ .Params.featured_image }}" alt="{{ .Title }}" class="card-image" loading="lazy">
+          <div class="card-content">
+            <h3 class="card-title">{{ .Title }}</h3>
+            <div class="card-meta">
+              <span>📅 {{ .Date.Format "02/01/2006" }}</span>
+              <span>⏱️ {{ .Params.lectura_minutos }} min</span>
+            </div>
+            <p style="color:#666;font-size:0.9rem;">{{ .Params.meta_description }}</p>
+            <a href="{{ .Permalink }}" class="btn btn-primary" style="margin-top:1rem;display:block;text-align:center;">Leer Más</a>
+          </div>
+        </article>
+        {{ end }}
+      </div>
+      <div style="text-align:center;margin-top:2rem;">
+        <a href="/blog/" class="btn btn-secondary">Ver Blog</a>
+      </div>
+    </div>
+  </section>
+  
+  {{ partial "chat-widget.html" . }}
+  {{ partial "footer.html" . }}
+  {{ partial "search-script.html" . }}
+</body>
+</html>
