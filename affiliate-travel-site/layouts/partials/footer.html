@@ -1,0 +1,49 @@
+<footer class="footer">
+  <div class="container">
+    <div class="footer-content">
+      <div class="footer-section">
+        <h3>🏔️ Viajes&Trekking</h3>
+        <p>Tu guía de confianza para aventuras inolvidables. Descubre rutas, equipos y consejos para tus expediciones.</p>
+      </div>
+      
+      <div class="footer-section">
+        <h3>Enlaces Rápidos</h3>
+        <ul>
+          <li><a href="/rutas/">Rutas de Trekking</a></li>
+          <li><a href="/blog/">Blog</a></li>
+          <li><a href="/productos/">Productos</a></li>
+          <li><a href="/page/about/">Sobre Nosotros</a></li>
+        </ul>
+      </div>
+      
+      <div class="footer-section">
+        <h3>Legal</h3>
+        <ul>
+          <li><a href="/page/disclaimer/">Disclaimer de Afiliados</a></li>
+          <li><a href="/page/privacidad/">Política de Privacidad</a></li>
+        </ul>
+      </div>
+      
+      <div class="footer-section">
+        <h3>Contacto</h3>
+        <p>Email: contacto@tudominio.com</p>
+        <div style="margin-top: 1rem;">
+          {{ if .Site.Params.social.twitter }}
+          <a href="{{ .Site.Params.social.twitter }}" style="margin-right: 0.5rem;">Twitter</a>
+          {{ end }}
+          {{ if .Site.Params.social.instagram }}
+          <a href="{{ .Site.Params.social.instagram }}" style="margin-right: 0.5rem;">Instagram</a>
+          {{ end }}
+          {{ if .Site.Params.social.facebook }}
+          <a href="{{ .Site.Params.social.facebook }}">Facebook</a>
+          {{ end }}
+        </div>
+      </div>
+    </div>
+    
+    <div class="footer-bottom">
+      <p>&copy; {{ now.Year }} Viajes&Trekking. Todos los derechos reservados.</p>
+      <p style="font-size: 0.875rem; margin-top: 0.5rem; opacity: 0.8;">{{ .Site.Params.affiliate_disclaimer }}</p>
+    </div>
+  </div>
+</footer>

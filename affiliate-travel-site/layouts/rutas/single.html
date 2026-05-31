@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{{ .Title }} - {{ .Site.Title }}</title>
+  <meta name="description" content="{{ .Params.meta_description }}">
+  <link rel="stylesheet" href="/css/styles.css">
+  <!-- Leaflet CSS -->
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+</head>
+<body>
+  {{ partial "header.html" . }}
+  
+  <article class="section">
+    <div class="container">
+      <div style="max-width:900px;margin:0 auto;">
+        <img src="{{ .Params.featured_image }}" alt="{{ .Title }}" style="width:100%;height:400px;object-fit:cover;border-radius:12px;" loading="lazy">
+        
+        <div style="background:white;padding:2rem;border-radius:12px;margin-top:2rem;box-shadow:0 4px 15px rgba(0,0,0,0.1);">
+          <h1 style="color:var(--color-secondary);margin-bottom:1rem;">{{ .Title }}</h1>
+          
+          <div class="blog-post-meta">
+            <span>📍 {{ .Params.region }}, {{ .Params.pais }}</span>
+            <span>📏 {{ .Params.distancia_km }} km</span>
+            <span>⏱️ {{ .Params.duracion_dias }} días</span>
+            <span>📅 {{ .Date.Format "02/01/2006" }}</span>
+          </div>
+          
+          <span class="badge difficulty-{{ .Params.dificultad }}" style="font-size:1rem;padding:0.5rem 1rem;">Dificultad: {{ .Params.dificultad }}</span>
+          
+          <div class="ad-space-small">Espacio para Ads - Banner horizontal</div>
+          
+          <div style="margin:2rem 0;line-height:1.8;">
+            {{ .Content }}
+          </div>
+          
+          <!-- Interactive Map -->
+          <div id="map" class="map-container"></div>
+          
+          <!-- Affiliate Button -->
+          <div style="margin-top:2rem;text-align:center;">
+            <a href="#" class="btn btn-affiliate" style="max-width:400px;display:inline-block;">
+              🎯 Reservar esta Ruta / Más Información
+            </a>
+            <p style="font-size:0.875rem;color:#666;margin-top:0.5rem;">{{ .Site.Params.affiliate_disclaimer }}</p>
+          </div>
+          
+          <div class="ad-space-small">Espacio para Ads - Banner inferior</div>
+        </div>
+      </div>
+    </div>
+  </article>
+  
+  {{ partial "chat-widget.html" . }}
+  {{ partial "footer.html" . }}
+  {{ partial "search-script.html" . }}
+  
+  <!-- Leaflet JS -->
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+  <script>
+    // Initialize map with route location
+    const lat = {{ .Params.latitud }};
+    const lng = {{ .Params.longitud }};
+    
+    const map = L.map('map').setView([lat, lng], 10);
+    
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+      attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+    }).addTo(map);
+    
+    L.marker([lat, lng]).addTo(map)
+      .bindPopup('<b>{{ .Title }}</b><br>{{ .Params.region }}, {{ .Params.pais }}')
+      .openPopup();
+  </script>
+</body>
+</html>

@@ -1,0 +1,56 @@
+<div class="chat-widget">
+  <button class="chat-button" onclick="toggleChat()">💬</button>
+  <div class="chat-window" id="chat-window">
+    <div class="chat-header">
+      <span>Asistente Virtual</span>
+      <button onclick="toggleChat()" style="background:none;border:none;color:white;font-size:1.25rem;cursor:pointer;">✕</button>
+    </div>
+    <div class="chat-body" id="chat-body">
+      <div style="background:#e8f4f8;padding:0.75rem;border-radius:8px;margin-bottom:1rem;max-width:80%;">
+        ¡Hola! 👋 Soy tu asistente virtual. ¿En qué puedo ayudarte hoy?
+      </div>
+    </div>
+    <div class="chat-input-area">
+      <input type="text" class="chat-input" id="chat-input" placeholder="Escribe tu mensaje...">
+      <button class="chat-send" onclick="sendMessage()">Enviar</button>
+    </div>
+  </div>
+</div>
+
+<script>
+function toggleChat() {
+  document.getElementById('chat-window').classList.toggle('active');
+}
+
+function sendMessage() {
+  const input = document.getElementById('chat-input');
+  const message = input.value.trim();
+  if (!message) return;
+  
+  // Add user message
+  const chatBody = document.getElementById('chat-body');
+  const userMsg = document.createElement('div');
+  userMsg.style.cssText = 'background:#FF6B35;color:white;padding:0.75rem;border-radius:8px;margin-bottom:1rem;max-width:80%;margin-left:auto;';
+  userMsg.textContent = message;
+  chatBody.appendChild(userMsg);
+  
+  input.value = '';
+  chatBody.scrollTop = chatBody.scrollHeight;
+  
+  // Simulate AI response (replace with actual API call)
+  setTimeout(() => {
+    const aiMsg = document.createElement('div');
+    aiMsg.style.cssText = 'background:#e8f4f8;padding:0.75rem;border-radius:8px;margin-bottom:1rem;max-width:80%;';
+    aiMsg.textContent = 'Gracias por tu mensaje. Un agente te atenderá pronto. Para consultas sobre productos o rutas, visita nuestras secciones correspondientes.';
+    chatBody.appendChild(aiMsg);
+    chatBody.scrollTop = chatBody.scrollHeight;
+  }, 1000);
+}
+
+// Send on Enter key
+document.addEventListener('DOMContentLoaded', function() {
+  document.getElementById('chat-input').addEventListener('keypress', function(e) {
+    if (e.key === 'Enter') sendMessage();
+  });
+});
+</script>

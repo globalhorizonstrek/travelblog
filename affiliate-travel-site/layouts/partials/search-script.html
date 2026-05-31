@@ -1,0 +1,124 @@
+<!-- FlexSearch Library -->
+<script src="https://cdn.jsdelivr.net/npm/flexsearch@0.7.31/dist/flexsearch.bundle.min.js"></script>
+
+<script>
+// Initialize search indexes
+let productIndex, routeIndex;
+let productsData = [], routesData = [];
+
+document.addEventListener('DOMContentLoaded', function() {
+  // Initialize FlexSearch indexes
+  productIndex = new FlexSearch.Document({
+    document: {
+      id: 'id',
+      index: ['title', 'categoria', 'marca', 'descripcion']
+    }
+  });
+  
+  routeIndex = new FlexSearch.Document({
+    document: {
+      id: 'id',
+      index: ['title', 'region', 'pais', 'descripcion']
+    }
+  });
+  
+  // Load products data
+  fetch('/productos/index.json')
+    .then(response => response.json())
+    .then(data => {
+      productsData = data;
+      data.forEach((product, idx) => {
+        productIndex.add({
+          id: idx,
+          title: product.title,
+          categoria: product.categoria || '',
+          marca: product.marca || '',
+          descripcion: product.meta_description || '',
+          url: product.url,
+          type: 'producto',
+          precio: product.precio
+        });
+      });
+    })
+    .catch(err => console.error('Error loading products:', err));
+  
+  // Load routes data
+  fetch('/rutas/index.json')
+    .then(response => response.json())
+    .then(data => {
+      routesData = data;
+      data.forEach((route, idx) => {
+        routeIndex.add({
+          id: idx,
+          title: route.title,
+          region: route.region || '',
+          pais: route.pais || '',
+          descripcion: route.meta_description || '',
+          url: route.url,
+          type: 'ruta',
+          dificultad: route.dificultad
+        });
+      });
+    })
+    .catch(err => console.error('Error loading routes:', err));
+  
+  // Search input handler
+  const searchInput = document.getElementById('global-search-input');
+  const searchResults = document.getElementById('search-results');
+  
+  if (searchInput) {
+    searchInput.addEventListener('input', function(e) {
+      const query = e.target.value.trim();
+      
+      if (query.length < 2) {
+        searchResults.classList.remove('active');
+        return;
+      }
+      
+      const productResults = productIndex.search(query, { limit: 5 });
+      const routeResults = routeIndex.search(query, { limit: 5 });
+      
+      let html = '';
+      
+      // Product results
+      if (productResults[0] && productResults[0].result.length > 0) {
+        html += '<div style="padding:0.5rem 1rem;background:#f5f5f5;font-weight:bold;font-size:0.875rem;">Productos</div>';
+        productResults[0].result.forEach(id => {
+          const product = productsData[id];
+          html += `<a href="${product.url}" class="search-result-item" style="display:block;text-decoration:none;color:inherit;">
+            <strong>${product.title}</strong><br>
+            <span style="font-size:0.875rem;color:#666;">${product.categoria || ''} - ${product.precio ? '$'+product.precio : ''}</span>
+          </a>`;
+        });
+      }
+      
+      // Route results
+      if (routeResults[0] && routeResults[0].result.length > 0) {
+        html += '<div style="padding:0.5rem 1rem;background:#f5f5f5;font-weight:bold;font-size:0.875rem;">Rutas</div>';
+        routeResults[0].result.forEach(id => {
+          const route = routesData[id];
+          html += `<a href="${route.url}" class="search-result-item" style="display:block;text-decoration:none;color:inherit;">
+            <strong>${route.title}</strong><br>
+            <span style="font-size:0.875rem;color:#666;">${route.pais || ''} - ${route.dificultad || ''}</span>
+          </a>`;
+        });
+      }
+      
+      if (html) {
+        searchResults.innerHTML = html;
+        searchResults.classList.add('active');
+      } else {
+        searchResults.innerHTML = '<div class="search-result-item">No se encontraron resultados</div>';
+        searchResults.classList.add('active');
+      }
+    });
+    
+    // Close search on click outside
+    document.addEventListener('click', function(e) {
+      if (!e.target.closest('.global-search')) {
+        searchResults.classList.remove('active');
+      }
+    });
+  }
+});
+</script>

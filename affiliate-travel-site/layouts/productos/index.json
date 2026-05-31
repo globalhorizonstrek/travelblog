@@ -1,0 +1,14 @@
+{{- $.Scratch.Add "index" slice -}}
+{{- range .Site.RegularPages -}}
+  {{- if eq .Section "productos" -}}
+    {{- $.Scratch.Add "index" (dict 
+      "title" .Title 
+      "url" .Permalink 
+      "categoria" .Params.categoria
+      "marca" .Params.marca
+      "precio" .Params.precio
+      "meta_description" .Params.meta_description
+    ) -}}
+  {{- end -}}
+{{- end -}}
+{{- $.Scratch.Get "index" | jsonify -}}

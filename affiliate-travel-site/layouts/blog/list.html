@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Blog - {{ .Site.Title }}</title>
+  <meta name="description" content="Artículos, consejos y guías sobre trekking y viajes de aventura">
+  <link rel="stylesheet" href="/css/styles.css">
+</head>
+<body>
+  {{ partial "header.html" . }}
+  
+  <section class="section">
+    <div class="container">
+      <h1 class="section-title">📝 Blog de Viajes y Trekking</h1>
+      
+      <div class="grid grid-blog">
+        {{ range .Pages }}
+        <article class="card">
+          <img src="{{ .Params.featured_image }}" alt="{{ .Title }}" class="card-image" loading="lazy">
+          <div class="card-content">
+            <h3 class="card-title">{{ .Title }}</h3>
+            <div class="card-meta">
+              <span>📅 {{ .Date.Format "02/01/2006" }}</span>
+              <span>⏱️ {{ .Params.lectura_minutos }} min lectura</span>
+            </div>
+            <p style="color:#666;font-size:0.9rem;margin-bottom:1rem;">{{ .Params.meta_description }}</p>
+            {{ if .Params.categorias }}
+            <div style="margin-bottom:1rem;">
+              {{ range .Params.categorias }}
+              <span class="badge" style="background:#e0e0e0;color:#333;margin-right:0.5rem;">{{ . }}</span>
+              {{ end }}
+            </div>
+            {{ end }}
+            <a href="{{ .Permalink }}" class="btn btn-primary" style="display:block;text-align:center;">Leer Artículo</a>
+          </div>
+        </article>
+        {{ end }}
+      </div>
+    </div>
+  </section>
+  
+  {{ partial "chat-widget.html" . }}
+  {{ partial "footer.html" . }}
+  {{ partial "search-script.html" . }}
+</body>
+</html>

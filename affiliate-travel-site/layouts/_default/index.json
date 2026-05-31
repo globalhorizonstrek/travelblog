@@ -1,0 +1,18 @@
+{{- $.Scratch.Add "index" slice -}}
+{{- range .Site.RegularPages -}}
+  {{- if or (eq .Section "productos") (eq .Section "rutas") -}}
+    {{- $.Scratch.Add "index" (dict 
+      "title" .Title 
+      "url" .Permalink 
+      "section" .Section
+      "categoria" .Params.categoria
+      "marca" .Params.marca
+      "precio" .Params.precio
+      "region" .Params.region
+      "pais" .Params.pais
+      "dificultad" .Params.dificultad
+      "meta_description" .Params.meta_description
+    ) -}}
+  {{- end -}}
+{{- end -}}
+{{- $.Scratch.Get "index" | jsonify -}}

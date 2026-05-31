@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{{ .Title }} - {{ .Site.Title }}</title>
+  <meta name="description" content="{{ .Params.meta_description }}">
+  <link rel="stylesheet" href="/css/styles.css">
+</head>
+<body>
+  {{ partial "header.html" . }}
+  
+  <article class="section">
+    <div class="container">
+      <div style="max-width:900px;margin:0 auto;">
+        <img src="{{ .Params.featured_image }}" alt="{{ .Title }}" style="width:100%;height:400px;object-fit:cover;border-radius:12px;" loading="lazy">
+        
+        <div style="background:white;padding:2rem;border-radius:12px;margin-top:2rem;box-shadow:0 4px 15px rgba(0,0,0,0.1);">
+          <h1 style="color:var(--color-secondary);margin-bottom:1rem;">{{ .Title }}</h1>
+          
+          <div class="blog-post-meta">
+            <span>📅 {{ .Date.Format "02/01/2006" }}</span>
+            <span>⏱️ {{ .Params.lectura_minutos }} min lectura</span>
+            {{ if .Params.ruta_asociada }}
+            <span>🥾 Ruta asociada: {{ .Params.ruta_asociada }}</span>
+            {{ end }}
+          </div>
+          
+          {{ if .Params.categorias }}
+          <div style="margin-bottom:1.5rem;">
+            {{ range .Params.categorias }}
+            <span class="badge" style="background:var(--color-secondary);color:white;margin-right:0.5rem;">{{ . }}</span>
+            {{ end }}
+          </div>
+          {{ end }}
+          
+          <div class="ad-space-small">Espacio para Ads - Banner superior</div>
+          
+          <div style="margin:2rem 0;line-height:1.8;font-size:1.1rem;">
+            {{ .Content }}
+          </div>
+          
+          <div class="ad-space">Espacio para Ads - Banner grande entre contenido</div>
+          
+          {{ if .Params.productos_destacados_ids }}
+          <div style="margin-top:3rem;padding:2rem;background:#f9f9f9;border-radius:12px;">
+            <h3 style="color:var(--color-secondary);margin-bottom:1rem;">🎒 Productos Recomendados</h3>
+            <p style="color:#666;font-size:0.9rem;margin-bottom:1rem;">Estos productos pueden ser útiles para este tipo de aventura:</p>
+            <!-- Aquí se podrían cargar los productos destacados dinámicamente -->
+          </div>
+          {{ end }}
+          
+          <div class="ad-space-small">Espacio para Ads - Banner inferior</div>
+          
+          <div style="margin-top:2rem;padding-top:2rem;border-top:1px solid #eee;">
+            <a href="/blog/" class="btn btn-secondary">← Volver al Blog</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </article>
+  
+  {{ partial "chat-widget.html" . }}
+  {{ partial "footer.html" . }}
+  {{ partial "search-script.html" . }}
+</body>
+</html>
